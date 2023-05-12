@@ -4,10 +4,16 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Title>Flowish</Title>
+    <Description>Flowish Data In Motion Language</Description>
+	<Authors>Data Dragon</Authors>
+    <Copyright>Copyright 2003-2023 by Eric Knight</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FatumCore" Version="1.0.0" />
+    <PackageReference Include="Proliferation.CanOpener" Version="1.0.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
   </ItemGroup>
 
