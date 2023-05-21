@@ -1,17 +1,30 @@
-﻿//   Flowish
-//   Copyright (C) 2003-2019 Eric Knight
+﻿//   Flowish - An interpreted language used for Data-In-Motion
+//
+//   Copyright (C) 2003-2023 Eric Knight
+//   This software is distributed under the GNU Public v3 License
+//
+//   This program is free software: you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation, either version 3 of the License, or
+//   (at your option) any later version.
+
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+
+//   You should have received a copy of the GNU General Public License
 
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Data.SQLite;
 using System.Data;
-using FatumCore;
+using Proliferation.Fatum;
 using Microsoft.Win32;
-using AbsolutionLib.Unraveler;
+using Proliferation.CanOpener;
 using System.Data.SqlClient;
-using Fatum.FatumCore;
 
-namespace Flowish
+namespace Proliferation.Flowish
 {
     public class Flowish
     {
@@ -86,7 +99,7 @@ namespace Flowish
                 case "getattribute": token.tokentype = 1053; break;
                 case "removeattribute": token.tokentype = 1054; break;
                 case "setelement": token.tokentype = 1055; break;
-                case "getelement": token.tokentype = 1056; break;
+                case "GetElement": token.tokentype = 1056; break;
                 case "removeelement": token.tokentype = 1057; break;
                 case "newTree": token.tokentype = 1058; break;
                 case "disposeTree": token.tokentype = 1059; break;
@@ -1475,7 +1488,7 @@ namespace Flowish
                     {
                         Tree tmpdyn = (Tree) dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
-                        string value = tmpdyn.getElement(element);
+                        string value = tmpdyn.GetElement(element);
                         
                         IntToken resultValue = new IntToken("<tmp>", IntConstants.STRING);
                         resultValue.variableReference = new VarString();
@@ -1499,7 +1512,7 @@ namespace Flowish
                     {
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
-                        string value = tmpdyn.getAttribute(element);
+                        string value = tmpdyn.GetAttribute(element);
 
                         IntToken resultValue = new IntToken("<tmp>", IntConstants.STRING);
                         resultValue.variableReference = new VarString();
@@ -1523,7 +1536,7 @@ namespace Flowish
                     {
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
-                        tmpdyn.deleteNode(element);
+                        tmpdyn.DeleteNode(element);
                     }
                     break;
             }
@@ -1542,7 +1555,7 @@ namespace Flowish
                     {
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
-                        tmpdyn.removeAttribute(element);
+                        tmpdyn.RemoveAttribute(element);
                     }
                     break;
             }
@@ -1563,7 +1576,7 @@ namespace Flowish
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
                         string val = (string)value.variableReference.getValue();
-                        tmpdyn.setElement(element,val);
+                        tmpdyn.SetElement(element,val);
                     }
                     break;
             }
@@ -1584,7 +1597,7 @@ namespace Flowish
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
                         string val = (string)value.variableReference.getValue();
-                        tmpdyn.setAttribute(element, val);
+                        tmpdyn.SetAttribute(element, val);
                     }
                     break;
             }
@@ -1621,7 +1634,7 @@ namespace Flowish
             IntToken target = (IntToken)Pop(opStack);
 
             string element = (string)target.variableReference.getValue();
-            Tree tmpnode = XMLTree.readXML(element);
+            Tree tmpnode = XMLTree.ReadXML(element);
 
             IntToken resultValue = new IntToken("<tmp>", IntConstants.Tree);
             resultValue.variableReference = new VarTree();
@@ -1643,7 +1656,7 @@ namespace Flowish
                     {
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
-                        TreeDataAccess.writeXML(element, tmpdyn, "Data");
+                        TreeDataAccess.WriteXml(element, tmpdyn, "Data");
                     }
                     break;
             }
@@ -1656,7 +1669,7 @@ namespace Flowish
             IntToken target = (IntToken)Pop(opStack);
 
             string element = (string)target.variableReference.getValue();
-            Tree tmpnode = TreeDataAccess.readJson(element);
+            Tree tmpnode = TreeDataAccess.ReadJson(element);
 
             IntToken resultValue = new IntToken("<tmp>", IntConstants.Tree);
             resultValue.variableReference = new VarTree();
@@ -1678,7 +1691,7 @@ namespace Flowish
                     {
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
-                        TreeDataAccess.writeJson(element, tmpdyn, "Data");
+                        TreeDataAccess.WriteJson(element, tmpdyn, "Data");
                     }
                     break;
             }
@@ -1700,7 +1713,7 @@ namespace Flowish
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         Tree tmpnode = (Tree)node.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
-                        tmpdyn.addNode(tmpnode, element);
+                        tmpdyn.AddNode(tmpnode, element);
                     }
                     break;
             }
@@ -1719,7 +1732,7 @@ namespace Flowish
                     {
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
                         string element = (string)target.variableReference.getValue();
-                        Tree tmpnode = (Tree)tmpdyn.findNode(element);
+                        Tree tmpnode = (Tree)tmpdyn.FindNode(element);
 
                         IntToken resultValue = new IntToken("<tmp>", IntConstants.Tree);
                         resultValue.variableReference = new VarTree();
@@ -1778,7 +1791,7 @@ namespace Flowish
                 case 12:
                     {
                         Tree tmpdyn = (Tree)dyn.variableReference.getValue();
-                        tmpdyn.dispose();
+                        tmpdyn.Dispose();
                         dyn.variableReference.setValue(null);
                     }
                     break;
@@ -2140,7 +2153,7 @@ namespace Flowish
                                     {
                                         if (inType.CompareTo("System.Byte[]") == 0)
                                         {
-                                            invalue = FatumLib.convertBytesTostring((byte[])tmpKey.GetValue(tmp[tmp.Length - 1]));
+                                            invalue = FatumLib.ConvertBytesTostring((byte[])tmpKey.GetValue(tmp[tmp.Length - 1]));
                                             simplification = simplifier((byte[])tmpKey.GetValue(tmp[tmp.Length - 1]));
                                         }
                                         else
@@ -2172,21 +2185,21 @@ namespace Flowish
 
                                 if (!ErrorOccured)
                                 {
-                                    newPrivacyValue.setElement("Hive", hive);
-                                    newPrivacyValue.setElement("Key", updatedKeyname);
+                                    newPrivacyValue.SetElement("Hive", hive);
+                                    newPrivacyValue.SetElement("Key", updatedKeyname);
                                     if (invalue == null)
                                     {
-                                        newPrivacyValue.setElement("Value", "(null)");
+                                        newPrivacyValue.SetElement("Value", "(null)");
                                     }
                                     else
                                     {
-                                        newPrivacyValue.setElement("Value", invalue);
+                                        newPrivacyValue.SetElement("Value", invalue);
                                     }
                                     if (simplification != null)
                                     {
-                                        if (simplification.CompareTo("") != 0) newPrivacyValue.setElement("Simplification", simplification);
+                                        if (simplification.CompareTo("") != 0) newPrivacyValue.SetElement("Simplification", simplification);
                                     }
-                                    //newPrivacyValue.setElement("Action", "Investigate");
+                                    //newPrivacyValue.SetElement("Action", "Investigate");
 
                                     IntToken resultValue = new IntToken("<tmp>", IntConstants.Tree);
                                     resultValue.variableReference = new VarTree();
@@ -2198,7 +2211,7 @@ namespace Flowish
                             catch (InvalidCastException)
                             {
                                 result = new IntError(token, 31);
-                                newPrivacyValue.dispose();
+                                newPrivacyValue.Dispose();
                                 return result;
                             }
                         }
@@ -2346,7 +2359,7 @@ namespace Flowish
                                         {
                                             if (inType.CompareTo("System.Byte[]") == 0)
                                             {
-                                                invalue = FatumLib.convertBytesTostring((byte[])tmpKey.GetValue(allvalues[i]));
+                                                invalue = FatumLib.ConvertBytesTostring((byte[])tmpKey.GetValue(allvalues[i]));
                                                 simplification = simplifier((byte[])tmpKey.GetValue(allvalues[i]));
                                             }
                                             else
@@ -2362,21 +2375,21 @@ namespace Flowish
 
                                     if (invalue != null)
                                     {
-                                        newPrivacyValue.setElement("Hive", hive);
-                                        newPrivacyValue.setElement("Key", key + "\\" + allvalues[i]);
-                                        newPrivacyValue.setElement("Value", invalue);
+                                        newPrivacyValue.SetElement("Hive", hive);
+                                        newPrivacyValue.SetElement("Key", key + "\\" + allvalues[i]);
+                                        newPrivacyValue.SetElement("Value", invalue);
                                         if (simplification != null)
                                         {
-                                            if (simplification.CompareTo("") != 0) newPrivacyValue.setElement("Simplification", simplification);
+                                            if (simplification.CompareTo("") != 0) newPrivacyValue.SetElement("Simplification", simplification);
                                         }
-                                        //newPrivacyValue.setElement("Action", "Investigate");
-                                        Registry_Privacy.addNode(newPrivacyValue, "Data");
+                                        //newPrivacyValue.SetElement("Action", "Investigate");
+                                        Registry_Privacy.AddNode(newPrivacyValue, "Data");
                                     }
                                 }
                                 catch (InvalidCastException)
                                 {
                                     result = new IntError(token, 31);
-                                    newPrivacyValue.dispose();
+                                    newPrivacyValue.Dispose();
                                     return result;
                                 }
                             }
@@ -2514,14 +2527,14 @@ namespace Flowish
                                 for (int x = 0; x < subkeynames.Length; x++)
                                 {
                                     Tree newsubkey = new Tree();
-                                    newsubkey.setElement("Name", subkeynames[x]);
-                                    Registry_Privacy.addNode(newsubkey, "Subkey");
+                                    newsubkey.SetElement("Name", subkeynames[x]);
+                                    Registry_Privacy.AddNode(newsubkey, "Subkey");
                                 }
                             }
                             catch (Exception)
                             {
                                 result = new IntError(token, 31);
-                                Registry_Privacy.dispose();
+                                Registry_Privacy.Dispose();
                                 return result;
                             }
 
@@ -2731,10 +2744,10 @@ namespace Flowish
             comm.Connection = conn;
             comm.CommandText = sql.variableReference.ToString();
 
-            Tree fielddyn = (Tree)fields.variableReference;
+            Tree fielddyn = (Tree)fields.variableReference.getValue();
             foreach (string tmpStr in fielddyn.leafnames)
             {
-                comm.Parameters.AddWithValue(tmpStr, fielddyn.getElement(tmpStr));
+                comm.Parameters.AddWithValue(tmpStr, fielddyn.GetElement(tmpStr));
             }
             
             conn.Open();
@@ -2749,7 +2762,7 @@ namespace Flowish
                         Tree row = new Tree();
                         for (int i=0;i<dr.FieldCount;i++)
                         {
-                            row.addElement(dr.GetName(i), dr.GetString(i));
+                            row.AddElement(dr.GetName(i), dr.GetString(i));
                         }
                     }
                 }
@@ -2791,7 +2804,7 @@ namespace Flowish
             Tree fielddyn = (Tree)fields.variableReference.getValue();
             foreach (string tmpStr in fielddyn.leafnames)
             {
-                comm.Parameters.AddWithValue(tmpStr, fielddyn.getElement(tmpStr));
+                comm.Parameters.AddWithValue(tmpStr, fielddyn.GetElement(tmpStr));
             }
 
             conn.Open();

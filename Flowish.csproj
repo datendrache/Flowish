@@ -6,21 +6,22 @@
     <Nullable>enable</Nullable>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<Title>Flowish</Title>
-    <Description>Flowish Data In Motion Language</Description>
-	<Authors>Data Dragon</Authors>
+    <Description>Flowish Data-In-Motion Language</Description>
+	<Authors>Datendrache</Authors>
     <Copyright>Copyright 2003-2023 by Eric Knight</Copyright>
+    <AssemblyName>Proliferation.Flowish</AssemblyName>
+    <Version>1.0.2</Version>
+    <PackageProjectUrl>https://github.com/datendrache/Flowish</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/datendrache/Flowish.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Proliferation; Flows; Data-In-Motion; Language</PackageTags>
+    <PackageReleaseNotes>Updated package</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FatumCore" Version="1.0.0" />
-    <PackageReference Include="Proliferation.CanOpener" Version="1.0.0" />
+    <PackageReference Include="Proliferation.CanOpener" Version="1.0.2" />
+    <PackageReference Include="Proliferation.Fatum" Version="1.0.2" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.117" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Flowish Reference.docx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
